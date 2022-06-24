@@ -5,7 +5,7 @@
 ### 起動方法
 
 ```bash
-docker compose up
+docker compose up --build
 ```
 
 [http://localhost:5000/api/v1/part_time_jobs](http://localhost:5000/api/v1/part_time_jobs?q=1)等にアクセス
