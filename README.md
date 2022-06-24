@@ -8,7 +8,7 @@
 docker compose up --build
 ```
 
-[http://localhost:5000/api/v1/part_time_jobs](http://localhost:5000/api/v1/part_time_jobs?q=1)等にアクセス
+[http://localhost:5001/api/v1/part_time_jobs](http://localhost:5001/api/v1/part_time_jobs?q=1)等にアクセス
 
 ### mongodb接続方法
 
