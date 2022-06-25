@@ -13,6 +13,7 @@ def getPartTimeJobs():
     user = client.test.users.find_one()
     params = request.args
     response = {}
+    response.setdefault('status', 200)
     response.setdefault('part_time_jobs', user['part_time_jobs'])
     return make_response(jsonify(response))
 
