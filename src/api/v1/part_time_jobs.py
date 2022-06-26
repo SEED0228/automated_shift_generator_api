@@ -14,7 +14,7 @@ def getPartTimeJobs():
     params = request.args
     response = {}
     response.setdefault('status', 200)
-    response.setdefault('part_time_jobs', user['part_time_jobs'])
+    response.setdefault('part_time_jobs', user['part_time_jobs'] if 'part_time_jobs' in user else {})
     return make_response(jsonify(response))
 
 @app.route("/<string:id>", methods=['PATCH'])
@@ -44,7 +44,7 @@ def updatePartTimeJobs(id):
         user = json.loads(dumps(client.test.users.find_one()))
     else:
         response.setdefault('status', 203)
-    response.setdefault('part_time_jobs', user['part_time_jobs'])
+    response.setdefault('part_time_jobs', user['part_time_jobs'] if 'part_time_jobs' in user else {})
     return make_response(jsonify(response))
 
 @app.route("/<string:id>", methods=['DELETE'])
@@ -65,7 +65,7 @@ def deletePartTimeJobs(id):
     user = json.loads(dumps(client.test.users.find_one()))
     response = {}
     response.setdefault('status', 200)
-    response.setdefault('part_time_jobs', user['part_time_jobs'])
+    response.setdefault('part_time_jobs', user['part_time_jobs'] if 'part_time_jobs' in user else {})
     return make_response(jsonify(response))
 
 @app.route("/", methods=['POST'])
@@ -89,5 +89,5 @@ def createPartTimeJobs():
     user = json.loads(dumps(client.test.users.find_one()))
     response = {}
     response.setdefault('status', 200)
-    response.setdefault('part_time_jobs', user['part_time_jobs'])
+    response.setdefault('part_time_jobs', user['part_time_jobs'] if 'part_time_jobs' in user else {})
     return make_response(response)
