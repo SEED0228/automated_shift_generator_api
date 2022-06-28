@@ -4,6 +4,7 @@ from bson.json_util import dumps
 import json
 from uuid import uuid4
 from datetime import datetime
+from modules.create_shifts import create_shifts
 
 app = Blueprint('part_time_jobs', __name__)
 
