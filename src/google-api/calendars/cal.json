@@ -1,0 +1,77 @@
+{
+    "kind": "calendar#events",
+    "etag": "\"p33o97un3hr7vg0g\"",
+    "summary": "high-entropy",
+    "description": "HackU用のカレンダー",
+    "updated": "2022-06-28T02:37:55.222Z",
+    "timeZone": "Asia/Tokyo",
+    "accessRole": "owner",
+    "defaultReminders": [],
+    "nextSyncToken": "CPCT-uOOz_gCEPCT-uOOz_gCGAUgnO3M2QE=",
+    "items": [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3312765025870000\"",
+            "id": "5r0vebf13sta46bbt6lstte5b2",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=NXIwdmViZjEzc3RhNDZiYnQ2bHN0dGU1YjIgY19oMzdtcDV1dDRoZW5wOTYwb2RpcWtncGlrb0Bn",
+            "created": "2022-06-28T02:15:12.000Z",
+            "updated": "2022-06-28T02:15:12.935Z",
+            "summary": "大学",
+            "creator": {
+                "email": "g212102894@edu.teu.ac.jp"
+            },
+            "organizer": {
+                "email": "c_h37mp5ut4henp960odiqkgpiko@group.calendar.google.com",
+                "displayName": "high-entropy",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2022-07-01T08:00:00+09:00",
+                "timeZone": "Asia/Tokyo"
+            },
+            "end": {
+                "dateTime": "2022-07-01T16:00:00+09:00",
+                "timeZone": "Asia/Tokyo"
+            },
+            "iCalUID": "5r0vebf13sta46bbt6lstte5b2@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            },
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3312767750444000\"",
+            "id": "1iuq3i40ndal8vdslsofoe9sdd",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=MWl1cTNpNDBuZGFsOHZkc2xzb2ZvZTlzZGQgY19oMzdtcDV1dDRoZW5wOTYwb2RpcWtncGlrb0Bn",
+            "created": "2022-06-28T02:37:55.000Z",
+            "updated": "2022-06-28T02:37:55.222Z",
+            "summary": "テスト",
+            "creator": {
+                "email": "g212102894@edu.teu.ac.jp"
+            },
+            "organizer": {
+                "email": "c_h37mp5ut4henp960odiqkgpiko@group.calendar.google.com",
+                "displayName": "high-entropy",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2022-07-07T13:00:00+09:00",
+                "timeZone": "Asia/Tokyo"
+            },
+            "end": {
+                "dateTime": "2022-07-07T17:30:00+09:00",
+                "timeZone": "Asia/Tokyo"
+            },
+            "iCalUID": "1iuq3i40ndal8vdslsofoe9sdd@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            },
+            "eventType": "default"
+        }
+    ]
+}
