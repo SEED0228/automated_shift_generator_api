@@ -5,20 +5,25 @@ from deap import creator, base, tools, algorithms
 from scoop import futures
 from modules.variant import Variant
 import requests
+from itertools import groupby
 
 day_names = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 start_dt = dt.now()
 end_dt = dt.now()
 all_shifts = []
 parameters = {}
+ptjs = []
+shift_dict = {}
 
 # シフト作成用関数、apiから呼び出される
 def create_shifts(part_time_jobs, params: dict)-> dict:
-    global all_shifts, parameters
+    global all_shifts, parameters, ptjs
     parameters = params
     response = {}
-    from_time = dt.strptime(parameters['period']['from'], '%Y-%m-%d')
-    to_time = dt.strptime(parameters['period']['to'], '%Y-%m-%d')
+    ptjs = part_time_jobs
+    from_date = dt.strptime(parameters['period']['from'], '%Y-%m-%d')
+    to_date = dt.strptime(parameters['period']['to'], '%Y-%m-%d')
+    parameters['days'] = (to_date - from_date).days + 1
     all_shifts = get_all_shifts(part_time_jobs, parameters['period'])
     response.setdefault('results', exec_ga())
     return response
@@ -88,37 +93,43 @@ def get_all_shifts(part_time_jobs, period: dict)-> dict:
 
 # APIを介してgoogle calendarのイベント情報を取得
 def get_google_calendars_events(period: dict):
-    # r = requests.get('http://high-entropy.australiaeast.cloudapp.azure.com:8080/get_calendar', period)
-    # リクエストエラー発生時用
-    r = requests.get('http://high-entropy.australiaeast.cloudapp.azure.com:8080/get_calendar')
+    r = requests.get('http://high-entropy.australiaeast.cloudapp.azure.com:8080/get_calendar', period)
+    # # リクエストエラー発生時用
+    # r = requests.get('http://high-entropy.australiaeast.cloudapp.azure.com:8080/get_calendar')
     json = r.json()
     return json['items']
 
 # バリアントの評価
 def evalVariant(individual):
-    global all_shifts, parameters
-    variant = Variant(all_shifts, parameters, list=individual)
+    global all_shifts, parameters, shift_dict
+    variant = Variant(shift_dict, parameters, list=individual)
+    variant.create_selected_shifts()
     return variant.eval()
 
 # 遺伝的アルゴリズムの実行
 def exec_ga():
-    global all_shifts, parameters
-    length = len(all_shifts)
-    creator.create("FitnessMax", base.Fitness, weights=(-10.0, -1000.0, -10.0,))
+    result = {}
+    global all_shifts, parameters, shift_dict
+    shift_dict = {}
+    for key, shifts in groupby(all_shifts, key=lambda x: x['start_time'].strftime('%Y-%m-%d')):
+        shift_dict[key] = list(shifts)
+    result.setdefault('all_shifts0', all_shifts)
+    creator.create("FitnessMax", base.Fitness, weights=(-10.0, -10.0,))
     creator.create("Individual", list, fitness=creator.FitnessMax)
     toolbox = base.Toolbox()
     toolbox.register("map", futures.map)
     # 1/10でシフトが選択される 値が1の時にそのindexのシフトが選択
-    toolbox.register("attr_bool", random.randint, 0, 60)
-    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, length)
+    print(len(ptjs) * 100)
+    toolbox.register("attr_bool", random.randint, 0, len(ptjs) * 80)
+    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, len(shift_dict))
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("evaluate", evalVariant)
     toolbox.register("mate", tools.cxTwoPoint)
     toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
-    population = toolbox.population(n=1000)
+    population = toolbox.population(n=500)
 
-    NGEN=40
+    NGEN=20
     for gen in range(NGEN):
         offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
         fits = toolbox.map(toolbox.evaluate, offspring)
@@ -127,9 +138,9 @@ def exec_ga():
         population = toolbox.select(offspring, k=len(population))
         print(str(gen)+','+str(sum(tools.selBest(population, k=1)[0])))
     top10 = tools.selBest(population, k=10)
-    result = {}
     for i in range(10):
-        variant = Variant(all_shifts, parameters, list=top10[i])
+        variant = Variant(shift_dict, parameters, list=top10[i])
+        variant.create_selected_shifts()
         ind_result = {}
         ind_result.setdefault('salary', variant.sum_total_salary())
         ind_result.setdefault('shifts', variant.get_selected_shifts())
