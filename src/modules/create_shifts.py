@@ -127,9 +127,9 @@ def exec_ga():
     toolbox.register("mate", tools.cxTwoPoint)
     toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
-    population = toolbox.population(n=500)
+    population = toolbox.population(n=1000)
 
-    NGEN=20
+    NGEN=30
     for gen in range(NGEN):
         offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
         fits = toolbox.map(toolbox.evaluate, offspring)
