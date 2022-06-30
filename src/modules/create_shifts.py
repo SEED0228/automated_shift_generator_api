@@ -56,6 +56,7 @@ def get_all_shifts(part_time_jobs, period: dict)-> dict:
                             break_time = min(i // 7, 1)
                             work_time = i - break_time
                             components[day_name].append({
+                                "part_time_job_id": part_time_job['id'],
                                 "start_time": f"T{str(j).zfill(2)}:00:00+09:00",
                                 "end_time": f"T{str(j+i).zfill(2)}:00:00+09:00",
                                 "name": part_time_job['name'],
@@ -102,7 +103,7 @@ def get_google_calendars_events(period: dict):
 # バリアントの評価
 def evalVariant(individual):
     global all_shifts, parameters, shift_dict
-    variant = Variant(shift_dict, parameters, list=individual)
+    variant = Variant(shift_dict, parameters, ptjs, list=individual)
     variant.create_selected_shifts()
     return variant.eval()
 
@@ -139,7 +140,7 @@ def exec_ga():
         print(str(gen)+','+str(sum(tools.selBest(population, k=1)[0])))
     top10 = tools.selBest(population, k=10)
     for i in range(10):
-        variant = Variant(shift_dict, parameters, list=top10[i])
+        variant = Variant(shift_dict, parameters, ptjs, list=top10[i])
         variant.create_selected_shifts()
         ind_result = {}
         ind_result.setdefault('salary', variant.sum_total_salary())
