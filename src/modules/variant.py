@@ -54,10 +54,10 @@ class Variant(object):
             count_days = len(ptjs_shifts)
             expected_days = round(part_time_job['expected_day_per_week'] / 7 * self.parameters['days'])
             days_diff += abs(expected_days - count_days) / max(expected_days, count_days)
-            print(f"{part_time_job['name']}: {expected_days}, {count_days}")
+            # print(f"{part_time_job['name']}: {expected_days}, {count_days}")
         # 希望勤務日数との差異
         days_diff /= len(self.part_time_jobs)
-        print(f"{salary_diff}, {days_diff}")
+        # print(f"{salary_diff}, {days_diff}")
         return salary_diff, days_diff,
         
 
